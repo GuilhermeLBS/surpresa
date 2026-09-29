@@ -219,12 +219,18 @@ async function showFinale(){
     reducedMotion.removeEventListener('change',finishFade);
     section.hidden=true;fade.cancel();
   }else section.hidden=true;
+  const compactFinale=window.matchMedia('(max-width: 600px)').matches;
   const positions=[];
-  $('.finale-flowers').innerHTML=Array.from({length:42},()=>{
+  $('.finale-flowers').innerHTML=Array.from({length:compactFinale?18:42},()=>{
     // Escolher entre posições aleatórias espaçadas evita fileiras e aglomerações.
     let chosen,spacing=-1;
     for(let attempt=0;attempt<50;attempt++){
-      const candidate={x:8+Math.random()*84,y:6+Math.random()*88};
+      const candidate={
+        x:8+Math.random()*84,
+        y:compactFinale
+          ? (Math.random()<.5?6+Math.random()*10:84+Math.random()*10)
+          : 6+Math.random()*88
+      };
       if(candidate.y>30 && candidate.y<70)continue;
       const distance=positions.length?Math.min(...positions.map(p=>
         ((p.x-candidate.x)*innerWidth/100)**2+((p.y-candidate.y)*innerHeight/100)**2
@@ -232,16 +238,18 @@ async function showFinale(){
       if(distance>spacing){chosen=candidate;spacing=distance;}
     }
     // Reserva válida mesmo em caso de uma sequência aleatória incomum.
-    chosen ||= {x:8+Math.random()*84,y:6+Math.random()*24};
+    chosen ||= {x:8+Math.random()*84,y:6+Math.random()*(compactFinale?10:24)};
     positions.push(chosen);
-    const size=22+Math.random()*22,rotation=Math.random()*360;
+    const size=compactFinale?16+Math.random()*12:22+Math.random()*22;
+    const rotation=Math.random()*360;
     return `<span class="finale-flower" style="left:${chosen.x}%;top:${chosen.y}%;--flower-size:${size}px;--flower-delay:${Math.random()*.65}s;--flower-rotation:${rotation}deg;--sway-duration:${8+Math.random()*6}s;--sway-phase:${-Math.random()*12}s;--sway-x:${Math.random()*8-4}px;--sway-y:${-4-Math.random()*4}px"><svg viewBox="-42 -42 84 84" focusable="false">${flower(0,0,Math.random()<.5?'#9bbbcf':'#e4c65c')}</svg></span>`;
   }).join('');
-  $('.photo-stars').innerHTML=Array.from({length:28},(_,i)=>{
-    const side=i%4,along=5+Math.floor(i/4)*15;
+  $('.photo-stars').innerHTML=Array.from({length:compactFinale?16:28},(_,i)=>{
+    const side=i%4,along=compactFinale?12+Math.floor(i/4)*25:5+Math.floor(i/4)*15;
     const x=side===0?-5:side===1?105:along;
     const y=side===2?-7:side===3?107:along;
-    return `<span class="photo-star" style="left:${x}%;top:${y}%;--star-size:${12+Math.random()*12}px;--star-duration:${2.8+Math.random()*2.7}s;--star-delay:${-Math.random()*5}s">✦</span>`;
+    const starSize=compactFinale?9+Math.random()*5:12+Math.random()*12;
+    return `<span class="photo-star" style="left:${x}%;top:${y}%;--star-size:${starSize}px;--star-duration:${2.8+Math.random()*2.7}s;--star-delay:${-Math.random()*5}s">✦</span>`;
   }).join('');
   $('#finale').hidden=false;
   $('#finale-title').focus({preventScroll:true});
