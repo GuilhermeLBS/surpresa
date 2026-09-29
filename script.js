@@ -201,6 +201,74 @@ play.addEventListener('click',async()=>{
   $('#video-section').focus({preventScroll:true});
   $('.status').textContent='Uma mensagem somente para você. Use o play para assistir.';
 });
+// Música final: o contexto é liberado no gesto de iniciar o vídeo.
+// O ganho funciona também em celulares que não permitem mudar audio.volume.
+const finaleAudio = $('#finale-audio');
+const musicToggle = $('#music-toggle');
+const MUSIC_FADE_SECONDS = 6;
+let musicContext;
+let musicGain;
+let musicStarting = false;
+
+function prepareFinaleAudio() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return;
+  if (!musicContext) {
+    musicContext = new AudioContextClass();
+    musicGain = musicContext.createGain();
+    musicGain.gain.value = 0;
+    const source = musicContext.createMediaElementSource(finaleAudio);
+    source.connect(musicGain);
+    musicGain.connect(musicContext.destination);
+  }
+  return musicContext.resume();
+}
+
+async function startFinaleAudio() {
+  if (musicStarting || $('#finale').hidden) return;
+  musicStarting = true;
+  musicToggle.hidden = false;
+  try {
+    await prepareFinaleAudio();
+    if (musicGain) {
+      musicGain.gain.cancelScheduledValues(musicContext.currentTime);
+      musicGain.gain.setValueAtTime(0.02, musicContext.currentTime);
+    } else {
+      finaleAudio.volume = 0.02;
+    }
+    await finaleAudio.play();
+    if (musicGain) {
+      musicGain.gain.linearRampToValueAtTime(1, musicContext.currentTime + MUSIC_FADE_SECONDS);
+    } else {
+      const started = performance.now();
+      const raiseVolume = () => {
+        if (finaleAudio.paused) return;
+        const progress = Math.min(1, (performance.now() - started) / (MUSIC_FADE_SECONDS * 1000));
+        finaleAudio.volume = 0.02 + 0.98 * progress;
+        if (progress < 1) requestAnimationFrame(raiseVolume);
+      };
+      requestAnimationFrame(raiseVolume);
+    }
+    musicToggle.textContent = 'Pausar música';
+  } catch {
+    musicToggle.textContent = 'Ouvir música';
+    $('.status').textContent = 'Toque em Ouvir música para iniciar o áudio.';
+  } finally {
+    musicStarting = false;
+  }
+}
+
+musicToggle.addEventListener('click', () => {
+  if (musicStarting) return;
+  if (finaleAudio.paused) {
+    startFinaleAudio();
+  } else {
+    finaleAudio.pause();
+    musicToggle.textContent = 'Ouvir música';
+  }
+});
+window.addEventListener('pagehide', () => finaleAudio.pause());
+
 let finaleStarted=false;
 async function showFinale(){
   if(finaleStarted)return;
@@ -252,6 +320,7 @@ async function showFinale(){
     return `<span class="photo-star" style="left:${x}%;top:${y}%;--star-size:${starSize}px;--star-duration:${2.8+Math.random()*2.7}s;--star-delay:${-Math.random()*5}s">✦</span>`;
   }).join('');
   $('#finale').hidden=false;
+  startFinaleAudio();
   $('#finale-title').focus({preventScroll:true});
 }
 $('#gift-video').addEventListener('ended',showFinale,{once:true});
@@ -259,6 +328,10 @@ if(VIDEO_URL){
   const video=$('#gift-video');video.src=VIDEO_URL;
   $('#start-video').addEventListener('click',()=>{
     if(!video.hidden)return;
+    try {
+      Promise.resolve(prepareFinaleAudio()).catch(() => {});
+      finaleAudio.load();
+    } catch { /* O botão da tela final permite tentar novamente. */ }
     $('#video-placeholder').hidden=true;video.hidden=false;
     video.focus({preventScroll:true});
     video.play().catch(()=>{

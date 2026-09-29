@@ -1254,3 +1254,18 @@ body {
     font-size: 24px;
   }
 }
+
+/* Controle discreto da música, fora do espaço da foto. */
+.music-toggle {
+  position: absolute;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 2;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #8daebf;
+  border-radius: 24px;
+  background: #fffaf0;
+  color: #485761;
+  font: 13px/1.4 Arial, sans-serif;
+}
