@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f0e3">
+  <meta name="description" content="Uma cartinha cheia de carinho para a crisma da Duda.">
+  <title>Uma cartinha para Duda</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23f6f0e3'/%3E%3Cpath d='M8 13h24v17H8z' fill='%2391b6cc'/%3E%3Cpath d='m8 13 12 10 12-10' fill='none' stroke='%23fff4d6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20260929-photo-stars">
+  <script src="script.js?v=20260929-photo-stars" defer></script>
+</head>
+<body>
+  <div class="garden" aria-hidden="true"></div>
+  <header class="page-header"><span class="little-star">✧</span> UM CARINHO EM FORMA DE CARTA <span class="little-star">✧</span></header>
+  <main>
+    <section class="welcome" aria-labelledby="welcome-title">
+      <p class="eyebrow">PARA UM DIA MUITO SEU</p>
+      <h1 id="welcome-title">Duda<span>tem um carinho aqui pra você.</span></h1>
+      <div class="envelope-scene">
+      <svg class="flower-heart" viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path id="heart-orbit" d="M300 100 C220 -5 25 15 35 140 C45 240 230 325 300 375 C370 325 555 240 565 140 C575 15 380 -5 300 100 Z" fill="none"/>
+        <g class="heart-flowers"></g>
+      </svg>
+      <button class="envelope" id="open-letter" aria-label="Abrir o envelope para Duda" aria-expanded="false">
+        <span class="envelope-back"></span><span class="paper-peek">
+          <span class="paper-message" id="paper-message" hidden>
+            <span>Duda, receber o convite pra ser sua madrinha de Crisma é uma honra muito grande para mim.</span>
+            <span>Desde pequenas compartilhamos risadas, brincadeiras e momentos que guardo com muito carinho.</span>
+            <span>Ver vc amadurecendo, firme na sua fé, me enche de alegria. Quero caminhar com vc, apoiar suas escolhas e celebrar essa etapa.</span>
+            <span>Pode contar comigo, hoje e sempre...</span>
+            <span class="message-signature">Te amo</span>
+          </span>
+        </span>
+        <span class="envelope-front"></span><span class="envelope-flap"></span>
+        <span class="seal">♡</span><span class="envelope-name">Duda</span>
+      </button>
+      </div>
+      <div class="opening-hint">
+        <div class="hint-transition">
+          <span class="envelope-instruction">Toque no envelope para abrir</span>
+          <div class="surprise-action" hidden>
+            <button class="video-play" id="play" aria-label="Assistir à mensagem para Duda" aria-controls="video-section" aria-describedby="surprise-caption" hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5 19 12 8 19Z" fill="currentColor"/></svg></button>
+            <p class="surprise-caption" id="surprise-caption">Clique nesse botão<br>para uma surpresa</p>
+          </div>
+        </div>
+        <span aria-hidden="true">♡</span>
+      </div>
+    </section>
+    <section class="video-section" id="video-section" aria-label="Mensagem em vídeo para Duda" tabindex="-1" hidden>
+      <div class="video-frame">
+        <video id="gift-video" controls playsinline preload="metadata" hidden aria-label="Mensagem de crisma para Duda"></video>
+        <div class="video-placeholder" id="video-placeholder">
+          <span class="placeholder-heart" aria-hidden="true">♡</span>
+          <h2>Uma mensagem somente para você.</h2>
+          <p>Com muito amor,</p>
+          <p class="video-signature">Isabela Felchak</p>
+          <button class="video-play intro-play" id="start-video" aria-label="Reproduzir o vídeo da Isabela"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5 19 12 8 19Z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+    </section>
+    <section class="finale" id="finale" aria-labelledby="finale-title" hidden>
+      <div class="finale-flowers" aria-hidden="true"></div>
+      <div class="finale-content">
+        <h2 id="finale-title" tabindex="-1">Você é uma<br>pessoa especial</h2>
+        <figure class="finale-photo">
+          <img src="foto.jpeg" alt="Uma lembrança especial de vocês juntas na formatura" width="1392" height="928" decoding="async">
+          <div class="photo-stars" aria-hidden="true"></div>
+        </figure>
+      </div>
+    </section>
+  </main>
+  <div class="departure-stage" aria-hidden="true"></div>
+  <p class="status" role="status" aria-live="polite"></p>
+  <footer>Que coisas bonitas floresçam no seu caminho.</footer>
+</body>
+</html>
+
+
